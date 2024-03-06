@@ -40,7 +40,9 @@ INSTALLED_APPS = [
 ]
 
 EXTERNAL_APP = [
-    'enterprise'
+    'enterprise',
+    'user',
+    'device'
 ]
 INSTALLED_APPS += EXTERNAL_APP
 
