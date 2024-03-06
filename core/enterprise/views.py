@@ -28,9 +28,11 @@ class EnterpriseRegistrationView(APIView):
                     {'message': 'Conflict: Account with email exists', 'Email': isEmailExists[0]['email']},
                     status=status.HTTP_409_CONFLICT
                 )
+            
+            hashedPassword = make_password(password) 
 
             # models.py has the original MySQL query written, it has been called here for better code structuring
-            Enterprise.objects.registerEnterprise(name, email, password, contact)
+            Enterprise.objects.registerEnterprise(name, email, hashedPassword, contact)
 
             return Response({'message': 'Created: Enterprise Registered', 'Name': name, 'Email': email},
                             status=status.HTTP_201_CREATED)
@@ -56,7 +58,7 @@ class EnterpriseLoginView(APIView):
 
             enterprise = isEmailExists[0]  # isEmailExists = true. Hence array.
             print(enterprise, password)
-            if not (password == enterprise[3]):
+            if not (check_password(password, enterprise[3])):
                 return Response({'message': 'Invalid password'}, status=status.HTTP_401_UNAUTHORIZED)
 
             # To generate a token for payload
