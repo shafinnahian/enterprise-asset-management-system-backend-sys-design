@@ -17,10 +17,10 @@ class UserRegistrationView(APIView):
             if name is None or email is None or contact is None or enterprise_id is None:
                 return Response({'message': 'Bad Request: Missing required fields'},
                                 status=status.HTTP_400_BAD_REQUEST)
+            
             isEmailExists = User.objects.isEmailExist(email)
-            print ('isEmailExists', isEmailExists)
 
-            if len(isEmailExists) > 0:
+            if len(isEmailExists) > 0:  ## if an email exists, then email cannot be used again [unique : True]
                 return Response({
                     'message': 'User with email already exists', 'Email:': email
                 }, status=status.HTTP_406_NOT_ACCEPTABLE)
